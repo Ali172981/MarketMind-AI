@@ -1,0 +1,9 @@
+[Unit]
+Description=Verified MarketMind SQLite backup
+
+[Service]
+Type=oneshot
+User=marketmind
+Group=marketmind
+WorkingDirectory=/opt/marketmind-ai/backend
+ExecStart=/opt/marketmind-ai/backend/.venv/bin/python /opt/marketmind-ai/backend/scripts_backup_db.py --destination /opt/marketmind-ai/backend/backups --retain 14

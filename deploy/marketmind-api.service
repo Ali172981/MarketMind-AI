@@ -1,0 +1,23 @@
+[Unit]
+Description=MarketMind AI API
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=marketmind
+Group=marketmind
+WorkingDirectory=/opt/marketmind-ai/backend
+EnvironmentFile=/opt/marketmind-ai/backend/.env
+ExecStart=/opt/marketmind-ai/backend/.venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 --workers 1
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+KillSignal=SIGINT
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=/opt/marketmind-ai/backend/data /opt/marketmind-ai/backend/backups
+
+[Install]
+WantedBy=multi-user.target

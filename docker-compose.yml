@@ -1,0 +1,32 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: marketmind-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: marketmind
+      POSTGRES_USER: marketmind
+      POSTGRES_PASSWORD: change_this_local_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - marketmind_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U marketmind -d marketmind"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: marketmind-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - marketmind_redisdata:/data
+    command: ["redis-server", "--appendonly", "yes"]
+
+volumes:
+  marketmind_pgdata:
+  marketmind_redisdata:
